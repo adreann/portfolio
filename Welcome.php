@@ -1,0 +1,275 @@
+<?php
+// All editable content (name, bio, skills, projects, links) lives in config.php
+require_once __DIR__ . '/config.php';
+?>
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Welcome — <?php echo $shortName; ?>'s Site</title>
+
+<!-- Bootstrap 5 -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Google Fonts: Space Grotesk (display) + Inter (body) + JetBrains Mono (code accents) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --void:        #05060f;
+    --deep-space:  #0d1024;
+    --nebula:      #6c5ce7;
+    --nebula-teal: #29d3c7;
+    --starlight:   #f5f3ff;
+    --comet-gold:  #ffd166;
+    --dim-text:    #9d9bc2;
+  }
+
+  *{ box-sizing:border-box; }
+
+  html,body{
+    height:100%;
+    margin:0;
+    background: radial-gradient(ellipse at 50% 20%, var(--deep-space) 0%, var(--void) 65%);
+    color: var(--starlight);
+    font-family:'Inter', sans-serif;
+    overflow:hidden;
+  }
+
+  #galaxy-canvas{
+    position:fixed;
+    top:0; left:0;
+    width:100%; height:100%;
+    z-index:0;
+  }
+
+  .hero{
+    position:relative;
+    z-index:2;
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding: 0 1.5rem;
+  }
+
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.85rem;
+    letter-spacing:0.25em;
+    text-transform:uppercase;
+    color: var(--nebula-teal);
+    margin-bottom:1.25rem;
+    opacity:0;
+    animation: fadeUp 0.8s ease-out 0.2s forwards;
+  }
+
+  .eyebrow::before{ content:"// "; color: var(--dim-text); }
+
+  h1.title{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:700;
+    font-size: clamp(2.2rem, 6vw, 4.2rem);
+    line-height:1.1;
+    margin:0 0 0.75rem 0;
+    background: linear-gradient(120deg, var(--starlight) 30%, var(--nebula-teal) 70%, var(--comet-gold) 100%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
+    opacity:0;
+    animation: fadeUp 0.8s ease-out 0.45s forwards;
+  }
+
+  .tagline{
+    font-family:'Space Grotesk', sans-serif;
+    font-size: clamp(1rem, 2.2vw, 1.35rem);
+    color: var(--dim-text);
+    margin-bottom:2.5rem;
+    opacity:0;
+    animation: fadeUp 0.8s ease-out 0.7s forwards;
+  }
+
+  .tagline .cursor{
+    display:inline-block;
+    width:2px;
+    height:1.1em;
+    background:var(--nebula-teal);
+    margin-left:4px;
+    vertical-align:text-bottom;
+    animation: blink 1s steps(1) infinite;
+  }
+
+  .enter-btn{
+    opacity:0;
+    animation: fadeUp 0.8s ease-out 0.95s forwards;
+    position:relative;
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.95rem;
+    letter-spacing:0.08em;
+    color: var(--void);
+    background: linear-gradient(120deg, var(--nebula-teal), var(--nebula));
+    border:none;
+    padding: 0.95rem 2.4rem;
+    border-radius: 999px;
+    cursor:pointer;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    box-shadow: 0 0 0 rgba(108,92,231,0);
+  }
+
+  .enter-btn:hover{
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(108,92,231,0.45);
+  }
+
+  .enter-btn:active{ transform: translateY(-1px); }
+
+  .hint{
+    margin-top:1rem;
+    font-size:0.8rem;
+    color: var(--dim-text);
+    opacity:0;
+    animation: fadeUp 0.8s ease-out 1.15s forwards;
+  }
+
+  @keyframes fadeUp{
+    from{ opacity:0; transform: translateY(14px); }
+    to{ opacity:1; transform: translateY(0); }
+  }
+
+  @keyframes blink{
+    50%{ opacity:0; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .eyebrow, h1.title, .tagline, .enter-btn, .hint{
+      animation:none !important;
+      opacity:1 !important;
+    }
+    .tagline .cursor{ animation:none; }
+  }
+
+  
+</style>
+</head>
+<body>
+
+<canvas id="galaxy-canvas"></canvas>
+
+<section class="hero">
+  <div class="eyebrow">system.online</div>
+  <h1 class="title">Welcome to <?php echo $shortName; ?>'s Site</h1>
+  <p class="tagline"><?php echo $tagline; ?> — please feel free to enjoy the view<span class="cursor"></span></p>
+  <button class="enter-btn" id="enterBtn">ENTER PORTFOLIO →</button>
+  <p class="hint">best viewed with the lights off</p>
+</section>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  const canvas = document.getElementById('galaxy-canvas');
+  const ctx = canvas.getContext('2d');
+  let width, height;
+  const glyphs = ['0','1','{','}','<','/','>'];
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function resize(){
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const STAR_COUNT = 140;
+  const stars = [];
+  for(let i=0; i<STAR_COUNT; i++){
+    stars.push({
+      x: Math.random()*width,
+      y: Math.random()*height,
+      r: Math.random()*1.6 + 0.4,
+      isGlyph: Math.random() < 0.12,
+      glyph: glyphs[Math.floor(Math.random()*glyphs.length)],
+      baseAlpha: Math.random()*0.6 + 0.3,
+      twinkleSpeed: Math.random()*0.02 + 0.005,
+      phase: Math.random()*Math.PI*2
+    });
+  }
+
+  let shootingStar = null;
+  function maybeSpawnShootingStar(){
+    if(!shootingStar && Math.random() < 0.004){
+      shootingStar = {
+        x: Math.random()*width*0.6,
+        y: Math.random()*height*0.3,
+        vx: 6 + Math.random()*4,
+        vy: 3 + Math.random()*2,
+        life: 1
+      };
+    }
+  }
+
+  let mouseX = 0, mouseY = 0;
+  window.addEventListener('mousemove', (e) => {
+    mouseX = (e.clientX / width - 0.5) * 12;
+    mouseY = (e.clientY / height - 0.5) * 12;
+  });
+
+  let t = 0;
+  function draw(){
+    ctx.clearRect(0,0,width,height);
+
+    stars.forEach(s => {
+      const twinkle = prefersReducedMotion ? s.baseAlpha : s.baseAlpha + Math.sin(t*s.twinkleSpeed + s.phase)*0.25;
+      const alpha = Math.max(0, Math.min(1, twinkle));
+      const px = s.x + (prefersReducedMotion ? 0 : mouseX);
+      const py = s.y + (prefersReducedMotion ? 0 : mouseY);
+
+      if(s.isGlyph){
+        ctx.font = `${s.r*8+8}px 'JetBrains Mono', monospace`;
+        ctx.fillStyle = `rgba(41, 211, 199, ${alpha*0.5})`;
+        ctx.fillText(s.glyph, px, py);
+      } else {
+        ctx.beginPath();
+        ctx.arc(px, py, s.r, 0, Math.PI*2);
+        ctx.fillStyle = `rgba(245, 243, 255, ${alpha})`;
+        ctx.fill();
+      }
+    });
+
+    if(!prefersReducedMotion){
+      maybeSpawnShootingStar();
+      if(shootingStar){
+        const s = shootingStar;
+        ctx.beginPath();
+        ctx.moveTo(s.x, s.y);
+        ctx.lineTo(s.x - s.vx*8, s.y - s.vy*8);
+        ctx.strokeStyle = `rgba(255, 209, 102, ${s.life})`;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        s.x += s.vx;
+        s.y += s.vy;
+        s.life -= 0.02;
+        if(s.life <= 0 || s.x > width || s.y > height) shootingStar = null;
+      }
+    }
+
+    t++;
+    requestAnimationFrame(draw);
+  }
+  draw();
+
+  // Entrance button — swap the alert for your real navigation.
+  $('#enterBtn').on('click', function(){
+    window.location.href = "<?php echo $nextPage; ?>";
+  });
+</script>
+
+</body>
+</html>
