@@ -1,21 +1,13 @@
-<?php
-// All editable content (name, bio, skills, projects, links) lives in config.php
-require_once __DIR__ . '/config.php';
-?>
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<link rel="icon" type="image/png" href="software-engineer.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Welcome — <?php echo $shortName; ?>'s Site</title>
+<title>Welcome — Adrian's Site</title>
 
-<!-- Bootstrap 5 -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-<!-- Google Fonts: Space Grotesk (display) + Inter (body) + JetBrains Mono (code accents) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
@@ -164,8 +156,8 @@ require_once __DIR__ . '/config.php';
 
 <section class="hero">
   <div class="eyebrow">system.online</div>
-  <h1 class="title">Welcome to <?php echo $shortName; ?>'s Site</h1>
-  <p class="tagline"><?php echo $tagline; ?> — please feel free to enjoy the view<span class="cursor"></span></p>
+  <h1 class="title">Welcome to Adrian's Site</h1>
+  <p class="tagline">Software Engineer — please feel free to enjoy the view<span class="cursor"></span></p>
   <button class="enter-btn" id="enterBtn">ENTER PORTFOLIO →</button>
   <p class="hint">best viewed with the lights off</p>
 </section>
@@ -265,9 +257,8 @@ require_once __DIR__ . '/config.php';
   }
   draw();
 
-  // Entrance button — swap the alert for your real navigation.
   $('#enterBtn').on('click', function(){
-    window.location.href = "<?php echo $nextPage; ?>";
+    window.location.href = "Home.html";
   });
 </script>
 
