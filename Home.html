@@ -38,6 +38,15 @@
     overflow-x:hidden;
   }
 
+  /* ================= PAGE FADE-IN ================= */
+  body{
+    opacity:0;
+    transition: opacity 0.9s ease;
+  }
+  body.page-loaded{
+    opacity:1;
+  }
+
   #galaxy-canvas{
     position:fixed;
     top:0; left:0;
@@ -166,7 +175,7 @@
       justify-content:flex-start;
       padding:0;
     }
-    .nav-goo-wrap.open{ max-height:280px; padding:0.6rem; }
+    .nav-goo-wrap.open{ max-height:340px; padding:0.6rem; }
     .nav-goo-layer{ display:none; }
     .nav-links{ flex-direction:column; width:100%; gap:0.2rem; }
     .nav-link{ padding:0.85rem 1rem; border-radius:12px; }
@@ -402,6 +411,123 @@
     margin:0;
   }
 
+  /* ================= CERTIFICATIONS ================= */
+  .cert-filters{
+    display:flex;
+    flex-wrap:wrap;
+    gap:0.7rem;
+    margin-bottom:2.25rem;
+  }
+  .cert-filter-btn{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.82rem;
+    letter-spacing:0.02em;
+    padding:0.65rem 1.35rem;
+    border-radius:999px;
+    border:1px solid var(--border);
+    background: transparent;
+    color: var(--dim-text);
+    cursor:pointer;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease, background 0.25s ease, color 0.25s ease;
+  }
+  .cert-filter-btn:hover{
+    border-color: var(--nebula-teal);
+    color: var(--starlight);
+    transform: translateY(-2px);
+  }
+  .cert-filter-btn.active{
+    background: linear-gradient(120deg, var(--nebula-teal), var(--nebula));
+    border-color: transparent;
+    color: var(--void);
+    font-weight:600;
+    box-shadow: 0 10px 24px var(--glow-teal);
+  }
+
+  .cert-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(280px,1fr));
+    gap:1.5rem;
+  }
+  .cert-card{
+    background: var(--panel);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:1.85rem;
+    cursor:pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  }
+  .cert-card:hover{
+    transform: translateY(-8px);
+    border-color: rgba(41,211,199,0.45);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.45), 0 0 0 1px var(--glow-teal);
+  }
+  .cert-card .cert-issuer{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.78rem;
+    color: var(--nebula-teal);
+    margin-bottom:0.85rem;
+  }
+  .cert-card h3{
+    font-family:'Sora', sans-serif;
+    font-weight:700;
+    font-size:1.15rem;
+    margin-bottom:0.45rem;
+  }
+  .cert-card p{
+    color: var(--dim-text);
+    font-size:0.9rem;
+    line-height:1.6;
+    margin:0 0 1rem 0;
+  }
+  .cert-card .cert-date{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.72rem;
+    letter-spacing:0.05em;
+    text-transform:uppercase;
+    color: var(--dim-text);
+  }
+  .cert-card .cert-view{
+    display:inline-block;
+    margin-top:0.9rem;
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.78rem;
+    color: var(--nebula-teal);
+  }
+
+  .coming-soon-card{
+    grid-column: 1 / -1;
+    text-align:center;
+    padding:3.5rem 1.5rem;
+    border:1px dashed var(--border);
+    border-radius:18px;
+    background: rgba(255,255,255,0.015);
+  }
+  .coming-soon-card .badge{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.72rem;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color: var(--comet-gold);
+    border:1px solid rgba(255,209,102,0.4);
+    padding:0.35rem 0.9rem;
+    border-radius:999px;
+    display:inline-block;
+    margin-bottom:1.1rem;
+  }
+  .coming-soon-card h3{
+    font-family:'Sora', sans-serif;
+    font-weight:700;
+    font-size:1.3rem;
+    margin:0 0 0.6rem 0;
+  }
+  .coming-soon-card p{
+    color: var(--dim-text);
+    font-size:0.95rem;
+    max-width:420px;
+    margin:0 auto;
+    line-height:1.65;
+  }
+
   /* ================= CONTACT ================= */
   .contact-box{
     background: var(--panel);
@@ -485,13 +611,20 @@
   .modal-nav:hover{ border-color:var(--nebula-teal); }
   .modal-nav.prev{ left:0.75rem; }
   .modal-nav.next{ right:0.75rem; }
+  .modal-nav.hidden{ display:none; }
   .modal-dots{ display:flex; justify-content:center; gap:0.4rem; margin-top:0.9rem; }
   .modal-dots span{ width:7px; height:7px; border-radius:50%; background: var(--border); transition: background 0.25s ease; }
   .modal-dots span.active{ background: var(--nebula-teal); }
 
   @media (prefers-reduced-motion: reduce){
     .reveal, .reveal-child{ opacity:1 !important; transform:none !important; transition:none !important; }
+    body{ transition:none !important; opacity:1 !important; }
     html{ scroll-behavior:auto; }
+  }
+
+  @media (max-width:480px){
+    .cert-filters{ gap:0.5rem; }
+    .cert-filter-btn{ padding:0.55rem 1.05rem; font-size:0.76rem; }
   }
 </style>
 </head>
@@ -524,6 +657,7 @@
           <li><a class="nav-link" href="#about" data-section="about">About</a></li>
           <li><a class="nav-link" href="#skills" data-section="skills">Skills</a></li>
           <li><a class="nav-link" href="#projects" data-section="projects">Projects</a></li>
+          <li><a class="nav-link" href="#certifications" data-section="certifications">Certifications</a></li>
           <li><a class="nav-link" href="#contact" data-section="contact">Contact</a></li>
         </ul>
       </div>
@@ -555,8 +689,8 @@
         <div class="stat-label">Platforms Covered</div>
       </div>
       <div class="stat-bubble reveal-child">
-        <div class="stat-num"><span>01</span></div>
-        <div class="stat-label">Flagship Build</div>
+        <div class="stat-num"><span>06</span></div>
+        <div class="stat-label">Certification</div>
       </div>
     </div>
   </section>
@@ -607,6 +741,13 @@
     </div>
   </section>
 
+  <section id="certifications" class="reveal">
+    <div class="eyebrow">certs.log</div>
+    <h2 class="section-title">Certifications</h2>
+    <div class="cert-filters" id="certFilters"></div>
+    <div class="cert-grid" id="certGrid"></div>
+  </section>
+
   <section id="contact" class="reveal">
     <div class="eyebrow">contact.channel</div>
     <h2 class="section-title">Let's talk</h2>
@@ -643,6 +784,14 @@
 
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
+
+  /* ================= Page fade-in on load ================= */
+  window.addEventListener('load', () => {
+    document.body.classList.add('page-loaded');
+  });
+  if(document.readyState === 'complete'){
+    document.body.classList.add('page-loaded');
+  }
 
   /* ================= Starfield canvas background ================= */
   const canvas = document.getElementById('galaxy-canvas');
@@ -695,7 +844,7 @@
   }
   draw();
 
-  /* ================= Scroll reveal (also fires on nav-click scroll) ================= */
+  /* ================= Scroll reveal ================= */
   const revealEls = document.querySelectorAll('.reveal, .reveal-child');
   if('IntersectionObserver' in window && !prefersReducedMotion){
     const observer = new IntersectionObserver((entries) => {
@@ -716,7 +865,7 @@
     const wrap = document.getElementById('navGooWrap');
     const blob = document.getElementById('navBlob');
     const links = document.querySelectorAll('.nav-link');
-    if(window.innerWidth <= 700) return; // mobile uses simple styles instead
+    if(window.innerWidth <= 700) return;
 
     function moveBlobTo(el){
       const wrapRect = wrap.getBoundingClientRect();
@@ -783,7 +932,7 @@
   ];
 
   const grid = document.getElementById('projectGrid');
-  projectData.forEach((p, idx) => {
+  projectData.forEach((p) => {
     const card = document.createElement('div');
     card.className = 'project-card reveal-child';
     card.innerHTML = `
@@ -792,10 +941,111 @@
       <div class="stack">${p.stack}</div>
       <p>${p.desc}</p>
     `;
-    card.addEventListener('click', () => openModal(idx));
+    card.addEventListener('click', () => openModal(p.images, p.name));
     grid.appendChild(card);
   });
-  // re-run observer for dynamically added cards
+
+  /* ================= Certification data + filter rendering =================
+     Edit the arrays below with your real certificates.
+     Each entry: { name, issuer, date, images: "file.png" (or an array of files) }
+     Leave an array empty to show a "Coming Soon" placeholder for that category.
+  ================================================================= */
+  const certData = {
+    programming: [
+      { name: "Python Programming Language",
+        issuer: "HRD Corp (Human Resource Development Corporation)",
+        date: "08-2026",
+        images: "Pyhtoncert.png" }
+    ],
+    cybersecurity: [
+      // Leave empty for "Coming Soon"
+    ],
+    ai: [
+      { name: "Certificate of Completion - Agentic AI for All",
+        issuer: "Ministry of Digital (Rakyat Digital)",
+        date: "08-2026",
+        images: "AIcert1.png" },
+      { name: "Certificate of Completion - Cloud untuk Rakyat",
+        issuer: "Ministry of Digital (Rakyat Digital)",
+        date: "08-2026",
+        images: "AIcert2.png" },
+      { name: "Certificate of Completion - CyberSAFE untuk Rakyat",
+        issuer: "Ministry of Digital (Rakyat Digital)",
+        date: "08-2026",
+        images: "AIcert3.png" },
+      { name: "Certificate of Completion - Introduction to Generative AI",
+        issuer: "Ministry of Digital (Rakyat Digital)",
+        date: "08-2026",
+        images: "AIcert4.png" },
+      { name: "Certificate of Completion - AI Safety",
+        issuer: "Ministry of Digital (Rakyat Digital)",
+        date: "08-2026",
+        images: "AIcert5.png" }
+    ]
+  };
+
+  const certCategories = [
+    { key: "programming",   label: "Programming Language" },
+    { key: "cybersecurity", label: "Cyber Security" },
+    { key: "ai",            label: "AI" }
+  ];
+
+  const certFiltersEl = document.getElementById('certFilters');
+  const certGridEl = document.getElementById('certGrid');
+  let activeCertCategory = "programming";
+
+  function renderCertFilters(){
+    certFiltersEl.innerHTML = '';
+    certCategories.forEach(cat => {
+      const btn = document.createElement('button');
+      btn.className = 'cert-filter-btn' + (cat.key === activeCertCategory ? ' active' : '');
+      btn.textContent = cat.label;
+      btn.addEventListener('click', () => {
+        activeCertCategory = cat.key;
+        renderCertFilters();
+        renderCertGrid();
+      });
+      certFiltersEl.appendChild(btn);
+    });
+  }
+
+  function renderCertGrid(){
+    certGridEl.innerHTML = '';
+    const items = certData[activeCertCategory] || [];
+    const catLabel = certCategories.find(c => c.key === activeCertCategory).label;
+
+    if(items.length === 0){
+      const soon = document.createElement('div');
+      soon.className = 'coming-soon-card reveal-child is-visible';
+      soon.innerHTML = `
+        <span class="badge">Coming Soon</span>
+        <h3>${catLabel} certifications</h3>
+        <p>I'm currently working on ${catLabel.toLowerCase()} certifications. Check back soon to see what I've earned.</p>
+      `;
+      certGridEl.appendChild(soon);
+      return;
+    }
+
+    items.forEach(cert => {
+      const card = document.createElement('div');
+      card.className = 'cert-card reveal-child is-visible';
+      card.innerHTML = `
+        <div class="cert-issuer">${cert.issuer || ''}</div>
+        <h3>${cert.name}</h3>
+        ${cert.date ? `<div class="cert-date">${cert.date}</div>` : ''}
+        <span class="cert-view">View Certificate →</span>
+      `;
+      card.addEventListener('click', () => {
+        const imgs = Array.isArray(cert.images) ? cert.images : [cert.images];
+        openModal(imgs, cert.name);
+      });
+      certGridEl.appendChild(card);
+    });
+  }
+
+  renderCertFilters();
+  renderCertGrid();
+
   if('IntersectionObserver' in window && !prefersReducedMotion){
     const cardObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -810,7 +1060,7 @@
     document.querySelectorAll('#projectGrid .project-card').forEach(el => el.classList.add('is-visible'));
   }
 
-  /* ================= Lightbox modal ================= */
+  /* ================= Lightbox modal (shared by projects + certifications) ================= */
   const overlay = document.getElementById('modalOverlay');
   const modalTitle = document.getElementById('modalTitle');
   const modalImg = document.getElementById('modalImg');
@@ -819,25 +1069,29 @@
   const modalNext = document.getElementById('modalNext');
   const modalClose = document.getElementById('modalClose');
 
-  let currentProject = null;
+  let currentImages = [];
+  let currentTitle = '';
   let currentIndex = 0;
 
   function renderModalImage(){
-    const p = projectData[currentProject];
-    modalImg.src = p.images[currentIndex];
-    modalImg.alt = p.name + ' screenshot ' + (currentIndex+1);
+    modalImg.src = currentImages[currentIndex];
+    modalImg.alt = currentTitle + ' image ' + (currentIndex+1);
     modalDots.innerHTML = '';
-    p.images.forEach((_, i) => {
+    currentImages.forEach((_, i) => {
       const dot = document.createElement('span');
       if(i === currentIndex) dot.classList.add('active');
       modalDots.appendChild(dot);
     });
+    const single = currentImages.length <= 1;
+    modalPrev.classList.toggle('hidden', single);
+    modalNext.classList.toggle('hidden', single);
   }
 
-  function openModal(idx){
-    currentProject = idx;
+  function openModal(images, title){
+    currentImages = images;
+    currentTitle = title;
     currentIndex = 0;
-    modalTitle.textContent = projectData[idx].name;
+    modalTitle.textContent = title;
     renderModalImage();
     overlay.classList.add('open');
     document.body.style.overflow = 'hidden';
@@ -851,12 +1105,12 @@
   modalClose.addEventListener('click', closeModal);
   overlay.addEventListener('click', (e) => { if(e.target === overlay) closeModal(); });
   modalPrev.addEventListener('click', () => {
-    const len = projectData[currentProject].images.length;
+    const len = currentImages.length;
     currentIndex = (currentIndex - 1 + len) % len;
     renderModalImage();
   });
   modalNext.addEventListener('click', () => {
-    const len = projectData[currentProject].images.length;
+    const len = currentImages.length;
     currentIndex = (currentIndex + 1) % len;
     renderModalImage();
   });
