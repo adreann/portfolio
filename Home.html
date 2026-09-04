@@ -925,11 +925,12 @@
       images: ["P2.png","P22.png","P23.png","P24.png","P25.png","P26.png","P27.png"]
     },
     {
-      name: "School Information System (SIS) in C#",
+      name: "Inventory Management System",
       flagship: false,
-      stack: "C#",
-      desc: "A desktop application that lets school administrators manage student records, attendance, and other administrative tasks through a user-friendly interface.",
-      images: ["P3.png"]
+      stack: "C# · ASP.NET",
+      desc: "A C# ASP.NET web application designed to manage inventory efficiently. The system allows users to add, update, delete, and track products, helping businesses maintain accurate stock records and simplify inventory management.",
+      images: ["ASP.png"],
+      link:"http://aqiffadriann-001-site1.ktempurl.com/"
     },
     {
       name: "Coffee Shop Voting System",
@@ -949,8 +950,9 @@
       <h3>${p.name}</h3>
       <div class="stack">${p.stack}</div>
       <p>${p.desc}</p>
+      ${p.link ? `<a href="${p.link}" target="_blank" rel="noopener noreferrer" class="live-link" onclick="event.stopPropagation()">🔗 View Live Demo</a>` : ''}
     `;
-    card.addEventListener('click', () => openModal(p.images, p.name));
+    card.addEventListener('click', () => openModal(p.images, p.link, p.name));
     grid.appendChild(card);
   });
 
